@@ -1,0 +1,12 @@
+Enter your choice (1-5):
+Enter the meal ID to add:
+Enter the meal name:
+Enter the meal description:
+Enter the price for this item (in cents):
+Meal added successfully.
+Enter your choice (1-5):
+Available Meals:
+5000: Shish Kebab - $8.00
+Enter your choice (1-5):
+Data saved. Exiting program.
+
