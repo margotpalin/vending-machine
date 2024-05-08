@@ -1,11 +1,25 @@
 #include "Menu.h"
 std::string Menu:: getNextMealId() {
-        return "F" + std::to_string(nextMealId++);
+    std::string ID;
+    if(nextId>=0 && nextId<=8){
+        ID="F000" + std::to_string(nextId++);
+        }
+    else if(nextId>=9 && nextId<=98){
+        ID="F00" + std::to_string(nextId++);
+        }
+    else if(nextId>=99 && nextId<=198){
+        ID="F0" + std::to_string(nextId++);
+        }
+    else{
+        ID="F" + std::to_string(nextId++);
+        }
     }
+
 void Menu::addMeal(const std::string& name, const std::string& description, double price) {
     std::string id = getNextMealId();
     Meal newMeal(id, name, description, price);
     meals.push_back(newMeal);
+    nextId=nextId++;
     std::cout << "This item \"" << newMeal.name << " - a dish consisting of " << newMeal.description
               << "\" has now been added to the food menu." << std::endl;
 }
@@ -25,6 +39,13 @@ void Menu::removeMeal(std::string mealId) {
 }
 
 void Menu::displayMeals() const {
+    std::cout<<"Food Menu"<<std::endl;
+    std::cout<<"---------"<<std::endl;
+    std::cout<< std::left << std::setw(10) << "ID" 
+              << std::setw(20) << "Name" 
+              << std::setw(10) << "Price" << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+
     for (const Meal& meal : meals) {
         meal.display();
     }
@@ -70,3 +91,4 @@ bool Menu::saveToFile(const std::string& filename) const {
     file.close();
     return true;
 }
+
