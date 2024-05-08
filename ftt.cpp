@@ -75,9 +75,9 @@ void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running
             menu.displayMeals();
 }
     else if(choice==2){
-            cout<< "Purchase Meal";
-            cout<<"-------------";
-            cout << "Pleae enter the ID of the food you wish to purchase: ";
+            cout<< "Purchase Meal"<<endl;
+            cout<<"-------------"<<endl;
+            cout << "Pleae enter the ID of the food you wish to purchase: "<<endl;
             cin >> mealId;
             tm.purchaseMeal(mealId);
     }
