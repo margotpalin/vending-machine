@@ -13,13 +13,14 @@ std::string Menu:: getNextMealId() {
     else{
         ID="F" + std::to_string(nextId++);
         }
+    return ID;
     }
 
 void Menu::addMeal(const std::string& name, const std::string& description, double price) {
     std::string id = getNextMealId();
     Meal newMeal(id, name, description, price);
     meals.push_back(newMeal);
-    nextId=nextId++;
+    nextId++;
     std::cout << "This item \"" << newMeal.name << " - a dish consisting of " << newMeal.description
               << "\" has now been added to the food menu." << std::endl;
 }
