@@ -10,7 +10,7 @@
 class Menu {
 private:
     std::list<Meal> meals;
-    int nextId;
+    int nextId=1;
 public:
     std::string getNextMealId();
     // Adds a meal to the menu
