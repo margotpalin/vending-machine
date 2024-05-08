@@ -39,11 +39,11 @@ void addNewMeal(Menu& menu) {
     std::cout << "This new meal item will have the Item id of " << menu.getNextMealId() << "." << std::endl;
     std::string name, description;
     double priceCents;
-    std::cout << "Enter the item name: ";
+    std::cout << "Enter the item name: "<<endl;
     std::getline(std::cin, name);
-    std::cout << "Enter the item description: ";
+    std::cout << "Enter the item description: "<<endl;
     std::getline(std::cin, description);
-    std::cout << "Enter the price for this item (in cents): ";
+    std::cout << "Enter the price for this item (in cents): "<<endl;
     std::cin >> priceCents;
     std::cin.ignore(); // Ignore leftover newline character after reading number
 
