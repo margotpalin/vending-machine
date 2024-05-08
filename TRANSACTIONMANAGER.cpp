@@ -46,7 +46,7 @@ void TransactionManager::purchaseMeal(std::string mealId) {
 }
 
 bool TransactionManager::giveChange(double change) {
-    std::vector<int> denominations{500, 200, 100, 50, 20, 10, 5}; // Denominations in cents
+    std::vector<int> denominations{500, 200, 100, 50, 20, 10, 5,2,1}; // Denominations in cents
     std::map<int, int> changeGiven;
     int changeInCents = static_cast<int>(change * 100);
 
