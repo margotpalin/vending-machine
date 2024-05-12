@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 void TransactionManager::purchaseMeal(std::string mealId) {
     Meal meal = menu.findMeal(mealId); // Assume findMeal returns a Meal object, handle the case where meal is not found
@@ -46,7 +48,7 @@ void TransactionManager::purchaseMeal(std::string mealId) {
 }
 
 bool TransactionManager::giveChange(double change) {
-    std::vector<int> denominations{500, 200, 100, 50, 20, 10, 5,2,1}; // Denominations in cents
+    std::vector<int> denominations{5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5}; // Denominations in cents
     std::map<int, int> changeGiven;
     int changeInCents = static_cast<int>(change * 100);
 
@@ -97,6 +99,13 @@ void TransactionManager::refund(double amount) {
 }
 
 bool TransactionManager::updateCashRegister(int denomination, int quantity) {
+    static const std::vector<int> validDenominations = {5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
+
+    if (std::find(validDenominations.begin(), validDenominations.end(), denomination) == validDenominations.end()) {
+        std::cout << "Error: invalid denomination encountered "  << std::endl;
+        return false;
+    }
+
     if (cashRegister[denomination] + quantity < 0) {
         std::cout << "Not enough in register to make change." << std::endl;
         return false;
@@ -105,6 +114,31 @@ bool TransactionManager::updateCashRegister(int denomination, int quantity) {
     lastTransaction[denomination] += quantity;  // Track changes for possible rollback
     return true;
 }
+
+
+void TransactionManager::loadInitialBalance(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file for reading: " << filename << std::endl;
+        return;
+    }
+    std::string line;
+    while (getline(file, line)) {
+        std::istringstream iss(line);
+        int denom, quantity;
+        char comma;
+        if (iss >> denom >> comma >> quantity) {
+            cashRegister[denom] = quantity;
+        } else {
+            std::cerr << "Erreur de formatage lors de la lecture de la ligne : " << line << std::endl;
+        }
+    }
+    file.close();
+}
+
+
+
+
 void TransactionManager::displayBalance() const {
     double totalValue = 0.0;
 
@@ -119,6 +153,11 @@ void TransactionManager::displayBalance() const {
                   << std::setw(6) << std::fixed << std::setprecision(2) << value << std::endl;
         totalValue += value;  // Accumulate total value
     }
+
+    // Print total
+    std::cout << "---------------------------" << std::endl;
+    std::cout << "                      $" << std::fixed << std::setprecision(2) << totalValue << std::endl;
+}
 
     // Print total
     std::cout << "---------------------------" << std::endl;
