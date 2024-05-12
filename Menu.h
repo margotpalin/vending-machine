@@ -12,6 +12,7 @@ private:
     std::list<Meal> meals;
     int nextId=1;
 public:
+    std::string previewNextMealId() const;
     std::string getNextMealId();
     // Adds a meal to the menu
     void addMeal(const std::string& name, const std::string& description, double price);
