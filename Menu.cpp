@@ -1,20 +1,20 @@
 #include "Menu.h"
-std::string Menu:: getNextMealId() {
-    std::string ID;
-    if(nextId>=0 && nextId<=8){
-        ID="F000" + std::to_string(nextId++);
-        }
-    else if(nextId>=9 && nextId<=98){
-        ID="F00" + std::to_string(nextId++);
-        }
-    else if(nextId>=99 && nextId<=198){
-        ID="F0" + std::to_string(nextId++);
-        }
-    else{
-        ID="F" + std::to_string(nextId++);
-        }
+std::string Menu::getNextMealId() {
+    int numDigits = std::to_string(nextId).length();  // Combien de chiffres dans le numéro
+    int totalDigits = 4;  // Total de chiffres souhaité pour l'ID (vous pouvez ajuster cela)
+
+    std::string ID = "F" + std::string(totalDigits - numDigits, '0') + std::to_string(nextId);
+    nextId++;
     return ID;
-    }
+}
+
+std::string Menu::previewNextMealId() const {
+    int numDigits = std::to_string(nextId).length();
+    int totalDigits = 4;
+
+    return "F" + std::string(totalDigits - numDigits, '0') + std::to_string(nextId);
+}
+
 
 void Menu::addMeal(const std::string& name, const std::string& description, double price) {
     std::string id = getNextMealId();
@@ -58,18 +58,30 @@ bool Menu::loadFromFile(const std::string& filename) {
         std::cerr << "Failed to open file for reading: " << filename << std::endl;
         return false;
     }
-    std::string id;
-    double price;
-    std::string name, description, line;
-    while (getline(file, line)) { // Read line by line
-        std::istringstream iss(line); // Create a string stream from the line
-        if (getline(iss, name, ',') && getline(iss, description, ',') && iss >> id >> price) {
-            meals.emplace_back(id, name, description, price); // Correctly construct a Meal object
-        }
+    std::string line;
+    std::string lastId = "F0000";
+
+    while (getline(file, line)) {
+        std::istringstream iss(line);
+        std::string id, name, description, priceStr;
+        if (getline(iss, id, '|') && getline(iss, name, '|') && getline(iss, description, '|') && getline(iss, priceStr)) {
+            double price = std::stod(priceStr); // Convert price string to double
+            meals.emplace_back(id, name, description, price);
+            lastId = id;
+        } else {
+            std::cerr << "Erreur de formatage lors de la lecture de la ligne : " << line << std::endl;
+        } 
     }
     file.close();
+
+    if (!lastId.empty() && lastId.size() > 1) {
+        nextId = std::stoi(lastId.substr(1)) + 1;  // Extrait le numéro après "F" et incrémente
+    }
+
     return true;
 }
+
+
 
 Meal Menu::findMeal(std::string mealId) const {
     for (const Meal& meal : meals) {
