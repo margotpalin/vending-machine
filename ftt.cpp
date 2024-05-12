@@ -14,7 +14,8 @@ void clearCin();
 int main() {
     Menu menu;
     TransactionManager tm(menu); // TransactionManager is initialized with the menu
-    menu.loadFromFile("meals.dat"); // Assuming loadFromFile is implemented
+    tm.loadInitialBalance("coins.dat");
+    menu.loadFromFile("foods.dat"); // Assuming loadFromFile is implemented
 
     bool running = true;
     while (running) {
@@ -36,14 +37,17 @@ int main() {
 }
 
 void addNewMeal(Menu& menu) {
-    std::cout << "This new meal item will have the Item id of " << menu.getNextMealId() << "." << std::endl;
+    std::cout << "This new meal item will have the Item id of " << menu.previewNextMealId() << "." << std::endl;
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
     std::string name, description;
     double priceCents;
-    std::cout << "Enter the item name: "<<endl;
+    std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
-    std::cout << "Enter the item description: "<<endl;
+    std::cout << "Enter the item description: ";
     std::getline(std::cin, description);
-    std::cout << "Enter the price for this item (in cents): "<<endl;
+    std::cout << "Enter the price for this item (in cents): ";
     std::cin >> priceCents;
     std::cin.ignore(); // Ignore leftover newline character after reading number
 
@@ -75,9 +79,9 @@ void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running
             menu.displayMeals();
 }
     else if(choice==2){
-            cout<< "Purchase Meal"<<endl;
-            cout<<"-------------"<<endl;
-            cout << "Pleae enter the ID of the food you wish to purchase: "<<endl;
+            cout<< "Purchase Meal" << endl;
+            cout<<"-------------" << endl;
+            cout << "Please enter the ID of the food you wish to purchase: " << endl;
             cin >> mealId;
             tm.purchaseMeal(mealId);
     }
