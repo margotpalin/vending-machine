@@ -158,8 +158,3 @@ void TransactionManager::displayBalance() const {
     std::cout << "---------------------------" << std::endl;
     std::cout << "                      $" << std::fixed << std::setprecision(2) << totalValue << std::endl;
 }
-
-    // Print total
-    std::cout << "---------------------------" << std::endl;
-    std::cout << "                      $" << std::fixed << std::setprecision(2) << totalValue << std::endl;
-}
