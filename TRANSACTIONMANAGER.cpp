@@ -16,16 +16,18 @@ void TransactionManager::purchaseMeal(std::string mealId) {
     std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase." << std::endl;
 
 
-    int denomination;
+    int denomination=0;
     double totalPaid = 0;
-    
+    bool rep;
+    std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price - totalPaid) << ": ";
     while (std::cin >> denomination) {
-        updateCashRegister(denomination, 1);  // Add each denomination to the register
-        totalPaid += denomination / 100.0;
+        rep=updateCashRegister(denomination, 1);  // Add each denomination to the register
+        if(rep==true){
+        totalPaid += denomination / 100.0;}
         if (totalPaid >= meal.price) {
             break;
         }
-        std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price - totalPaid) << std::endl;
+        std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price - totalPaid) << ": ";
     }
 
     if (totalPaid < meal.price) {
@@ -44,7 +46,7 @@ void TransactionManager::purchaseMeal(std::string mealId) {
         }
     }
 
-    std::cout << "Your change is " << std::fixed << std::setprecision(2) << change << std::endl;
+    std::cout<<std::endl;
 }
 
 bool TransactionManager::giveChange(double change) {
@@ -74,12 +76,15 @@ bool TransactionManager::giveChange(double change) {
     }
 
     // Successfully provided change, output the details
-    std::cout << "Change given:" << std::endl;
+    std::cout << "Your change is " ;
     for (const auto& pair : changeGiven) {
         int denom = pair.first;
         int count = pair.second;
-        if (count > 0) {
-            std::cout << "$" << denom / 100.0 << " x " << count << std::endl;
+        if (count > 0 && denom < 100){
+            std::cout << denom / 100.0<<"c ";
+        }
+        else if (count > 0) {
+            std::cout << "$" << denom / 100.0<<" ";
         }
     }
     return true;
@@ -100,19 +105,20 @@ void TransactionManager::refund(double amount) {
 
 bool TransactionManager::updateCashRegister(int denomination, int quantity) {
     static const std::vector<int> validDenominations = {5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
-
+    bool rep=true;
+    
     if (std::find(validDenominations.begin(), validDenominations.end(), denomination) == validDenominations.end()) {
         std::cout << "Error: invalid denomination encountered "  << std::endl;
-        return false;
+        rep= false;
     }
 
     if (cashRegister[denomination] + quantity < 0) {
         std::cout << "Not enough in register to make change." << std::endl;
-        return false;
+        rep= false;
     }
     cashRegister[denomination] += quantity;
     lastTransaction[denomination] += quantity;  // Track changes for possible rollback
-    return true;
+    return rep;
 }
 
 
@@ -144,17 +150,21 @@ void TransactionManager::displayBalance() const {
 
     std::cout << "Blance Summary" << std::endl;
     std::cout << "-------------" << std::endl;
-    std::cout << "Denom | Quantity | Value" << std::endl;
-    std::cout << "---------------------------" << std::endl;
+    std::cout << std::left << std::setw(6) << "Denom" << " | "
+              << std::setw(9) << "Quantity" << " | "
+              << std::setw(10) << "Value" << std::endl;
+    std::cout << "----------------------------" << std::endl;
+
     for (const auto& entry : cashRegister) {
-        double value = entry.first * entry.second / 100.0;  // Calculate value (denomination * quantity / 100 to convert cents to dollars)
-        std::cout << std::setw(5) << entry.first << " | "
-                  << std::setw(8) << entry.second << " | $"
-                  << std::setw(6) << std::fixed << std::setprecision(2) << value << std::endl;
-        totalValue += value;  // Accumulate total value
+        double value = entry.first * entry.second / 100.0;  // Convert cents to dollars
+        std::cout << std::left << std::setw(7) << entry.first << "| "
+                  << std::setw(9) << entry.second << " |$"
+                  << std::right << std::setw(7) << std::fixed << std::setprecision(2) << value << std::endl;
+        totalValue += value;
     }
 
     // Print total
-    std::cout << "---------------------------" << std::endl;
+    std::cout << "----------------------------" << std::endl;
     std::cout << "                      $" << std::fixed << std::setprecision(2) << totalValue << std::endl;
+
 }
