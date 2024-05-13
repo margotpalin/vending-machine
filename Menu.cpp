@@ -4,7 +4,7 @@ std::string Menu::getNextMealId() {
     int totalDigits = 4;  // Total de chiffres souhaité pour l'ID (vous pouvez ajuster cela)
 
     std::string ID = "F" + std::string(totalDigits - numDigits, '0') + std::to_string(nextId);
-    nextId++;
+    
     return ID;
 }
 
@@ -102,6 +102,8 @@ bool Menu::saveToFile(const std::string& filename) const {
         file << meal.id << " " << meal.name << " " << meal.description << " " << meal.price << "\n";
     }
     file.close();
+    return true;
+}
     return true;
 }
 
