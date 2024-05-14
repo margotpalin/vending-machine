@@ -81,7 +81,7 @@ bool TransactionManager::giveChange(double change) {
         int denom = pair.first;
         int count = pair.second;
         if (count > 0 && denom < 100){
-            std::cout << denom / 100.0<<"c ";
+            std::cout << denom<<"c ";
         }
         else if (count > 0) {
             std::cout << "$" << denom / 100.0<<" ";
@@ -112,12 +112,14 @@ bool TransactionManager::updateCashRegister(int denomination, int quantity) {
         rep= false;
     }
 
-    if (cashRegister[denomination] + quantity < 0) {
+    else if (cashRegister[denomination] + quantity < 0) {
         std::cout << "Not enough in register to make change." << std::endl;
         rep= false;
     }
+    else {
     cashRegister[denomination] += quantity;
-    lastTransaction[denomination] += quantity;  // Track changes for possible rollback
+    lastTransaction[denomination] += quantity; // Track changes for possible rollback
+    } 
     return rep;
 }
 
@@ -142,7 +144,19 @@ void TransactionManager::loadInitialBalance(const std::string& filename) {
     file.close();
 }
 
-
+bool TransactionManager::saveToFileCoin(const std::string& filename) const {
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file for writing: " << filename << std::endl;
+        return false;
+    }
+    // Supposons que cashRegister est un std::map<int, int>
+    for (const auto& pair : cashRegister) {
+        file << pair.first << "," << pair.second << "\n";
+    }
+    file.close();
+    return true;
+}
 
 
 void TransactionManager::displayBalance() const {
