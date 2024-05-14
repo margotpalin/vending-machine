@@ -1,12 +1,64 @@
-Enter your choice (1-5):
-Enter the meal ID to add:
-Enter the meal name:
-Enter the meal description:
-Enter the price for this item (in cents):
-Meal added successfully.
-Enter your choice (1-5):
-Available Meals:
-5000: Shish Kebab - $8.00
-Enter your choice (1-5):
-Data saved. Exiting program.
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): Purchase Meal
+-------------
+Please enter the ID of the food you wish to purchase: 
+You have selected ''Baklava - Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey. This will cost you $ 8.5
+Please hand over the money - type in the value of each note/coin in cents. 
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $8.50: You still need to give us $3.50: Error: invalid denomination encountered 
+You still need to give us $3.50: You still need to give us $1.50: Your change is 50c $1.00 $2.00 
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): Enter the food id of the food to remove from the menu: Enter the food id of the food to remove from the menu: F0005
+"F0005 - Bibimbab - Spicy Korean rice dish with vegetables, bean paste and beef" has been removed from the system.
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): Blance Summary
+-------------
+Denom  | Quantity  | Value     
+----------------------------
+5      | 20        |$   1.00
+10     | 40        |$   4.00
+20     | 3         |$   0.60
+50     | 5         |$   2.50
+100    | 30        |$  30.00
+200    | 20        |$  40.00
+500    | 6         |$  30.00
+1000   | 10        |$ 100.00
+2000   | 10        |$ 200.00
+5000   | 10        |$ 500.00
+----------------------------
+                      $908.10
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): Data saved. Exiting program.
 
