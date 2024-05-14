@@ -86,7 +86,8 @@ void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running
             tm.purchaseMeal(mealId);
     }
     else if(choice==3){
-            menu.saveToFile("meals.dat"); // Assumes saveToFile is implemented
+            menu.saveToFileMeal("foods.dat");
+            tm.saveToFileCoin("coins.dat");
             cout << "Data saved. Exiting program." << endl;
             running = false;
     }
