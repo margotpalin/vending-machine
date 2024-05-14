@@ -21,7 +21,7 @@ public:
 
     // Update the cash register with payment received
     bool updateCashRegister(int denomination, int quantity);
-
+    bool saveToFileCoin(const std::string& filename) const;
     void loadInitialBalance(const std::string& filename);
 
     // Display current cash balances in the cash register
