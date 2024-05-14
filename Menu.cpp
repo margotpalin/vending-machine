@@ -92,18 +92,16 @@ Meal Menu::findMeal(std::string mealId) const {
     return Meal("", "", "", 0.0); // Return an empty Meal if not found
 }
 
-bool Menu::saveToFile(const std::string& filename) const {
+bool Menu::saveToFileMeal(const std::string& filename) const {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open file for writing: " << filename << std::endl;
         return false;
     }
     for (const Meal& meal : meals) {
-        file << meal.id << " " << meal.name << " " << meal.description << " " << meal.price << "\n";
+        file << meal.id << "|" << meal.name << "|" << meal.description << "|" << meal.price << "\n";
     }
     file.close();
-    return true;
-}
     return true;
 }
 
