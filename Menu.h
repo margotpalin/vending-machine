@@ -28,7 +28,7 @@ public:
     bool loadFromFile(const std::string& filename);
 
     // Saves meals to a file
-    bool saveToFile(const std::string& filename) const;
+    bool saveToFileMeal(const std::string& filename) const;
 };
 
 #endif // MENU_H
