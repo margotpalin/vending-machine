@@ -5,11 +5,11 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include "Meal.h"  // Ensure Meal class is defined in a separate Meal.h file
+#include "LinkedList.h"
 
 class Menu {
 private:
-    std::list<Meal> meals;
+    LinkedList mealList;
     int nextId=1;
 public:
     std::string previewNextMealId() const;
@@ -22,7 +22,7 @@ public:
 
     // Displays all meals in the menu
     void displayMeals() const;
-    Meal findMeal(std::string mealId) const; 
+    Meal findMeal(const std::string& mealId) const; 
 
     // Loads meals from a file
     bool loadFromFile(const std::string& filename);
