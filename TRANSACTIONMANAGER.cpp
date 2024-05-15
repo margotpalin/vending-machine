@@ -3,27 +3,32 @@
 #include <iomanip>
 #include <vector>
 #include <fstream>
+#include <limits> 
+#include <ios>
 #include <sstream>
-
+#include "LinkedList.h"
 void TransactionManager::purchaseMeal(std::string mealId) {
     Meal meal = menu.findMeal(mealId); // Assume findMeal returns a Meal object, handle the case where meal is not found
     if (meal.id.empty()) {
         std::cout << "Meal not found." << std::endl;
         return;
     }
-    std::cout << "You have selected ''" << meal.name <<" - "<<meal.description<< ". This will cost you $ "<< meal.price << std::endl;
-    std::cout << "Please hand over the money - type in the value of each note/coin in cents. " << std::endl;
+
+    std::cout << "You have selected '" << meal.name << " - " << meal.description << ". This will cost you $" << meal.price<< std::endl;
+    std::cout << "Please hand over the money - type in the value of each note/coin in cents." << std::endl;
     std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase." << std::endl;
 
-
-    int denomination=0;
+    int denomination = 0;
     double totalPaid = 0;
-    bool rep;
-    std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price - totalPaid) << ": ";
+
+    bool rep = false;
+
+    std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price- totalPaid) << ": ";
+
     while (std::cin >> denomination) {
         rep=updateCashRegister(denomination, 1);  // Add each denomination to the register
         if(rep==true){
-        totalPaid += denomination / 100.0;}
+            totalPaid += denomination / 100.0;}
         if (totalPaid >= meal.price) {
             break;
         }
@@ -48,10 +53,10 @@ void TransactionManager::purchaseMeal(std::string mealId) {
 
     std::cout<<std::endl;
 }
-
 bool TransactionManager::giveChange(double change) {
-    std::vector<int> denominations{5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5}; // Denominations in cents
+    std::vector<int> denominations= {5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5}; // Denominations in cents
     std::map<int, int> changeGiven;
+    bool rep=true;
     int changeInCents = static_cast<int>(change * 100);
 
     for (int denom : denominations) {
@@ -72,7 +77,7 @@ bool TransactionManager::giveChange(double change) {
             int count = pair.second;
             cashRegister[denom] += count; // Revert the changes made
         }
-        return false;
+        rep=false;
     }
 
     // Successfully provided change, output the details
@@ -87,7 +92,7 @@ bool TransactionManager::giveChange(double change) {
             std::cout << "$" << denom / 100.0<<" ";
         }
     }
-    return true;
+    return rep;
 }
 
 void TransactionManager::refund(double amount) {
@@ -104,14 +109,13 @@ void TransactionManager::refund(double amount) {
 }
 
 bool TransactionManager::updateCashRegister(int denomination, int quantity) {
-    static const std::vector<int> validDenominations = {5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
+    static const std::vector<int> validDenominations= {5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
     bool rep=true;
     
     if (std::find(validDenominations.begin(), validDenominations.end(), denomination) == validDenominations.end()) {
         std::cout << "Error: invalid denomination encountered "  << std::endl;
         rep= false;
     }
-
     else if (cashRegister[denomination] + quantity < 0) {
         std::cout << "Not enough in register to make change." << std::endl;
         rep= false;
@@ -146,23 +150,24 @@ void TransactionManager::loadInitialBalance(const std::string& filename) {
 
 bool TransactionManager::saveToFileCoin(const std::string& filename) const {
     std::ofstream file(filename);
+    bool rep=true;
     if (!file.is_open()) {
         std::cerr << "Failed to open file for writing: " << filename << std::endl;
-        return false;
+        rep=false;
     }
     // Supposons que cashRegister est un std::map<int, int>
     for (const auto& pair : cashRegister) {
         file << pair.first << "," << pair.second << "\n";
     }
     file.close();
-    return true;
+    return rep;
 }
 
 
 void TransactionManager::displayBalance() const {
     double totalValue = 0.0;
 
-    std::cout << "Blance Summary" << std::endl;
+    std::cout << "Balance Summary" << std::endl;
     std::cout << "-------------" << std::endl;
     std::cout << std::left << std::setw(6) << "Denom" << " | "
               << std::setw(9) << "Quantity" << " | "
