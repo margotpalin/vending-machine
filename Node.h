@@ -1,8 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 #include <string> 
-#include "Coin.h"
-
+#include "Meal.h"
 
 //The length of the id string not counting the nul terminator
 #define IDLEN 5
@@ -21,41 +20,12 @@
 
 //The number of denominations of currency available in the system 
 #define NUM_DENOMS 8
-
-/**
- * a structure to represent a price. One of the problems with the floating
- * point formats in C++ like float and double is that they have minor issues
- * of inaccuracy due to rounding. In the case of currency this really is
- * not acceptable so we introduce our own type to keep track of currency.
- **/
-class Price
+enum Denomination
 {
-public:
-    // The dollar value, and the cents value for some price
-    unsigned dollars, cents;
+    FIVE_CENTS=5, TEN_CENTS=10, TWENTY_CENTS=20, FIFTY_CENTS=50, ONE_DOLLAR=100, 
+    TWO_DOLLARS=200, FIVE_DOLLARS=500, TEN_DOLLARS=1000, TWENTY_DOLLARS=2000, FIFTY_DOLLARS=5000
 };
 
-/**
- * data structure to represent a food item within the system
- **/
-class FoodItem
-{
-public:
-    //the unique id for this food item
-    std::string id;
-
-    //the name of this food item
-    std::string name;
-    
-    //the description of this food item   
-    std::string description;
-    
-    //the price of this food item
-    Price price;
-    
-    // how many of this food item do we have on hand? 
-    unsigned on_hand;    
-};
 
 /**
  * the node that holds the data about a food item stored in memory
@@ -63,10 +33,10 @@ public:
 class Node
 {
 public:
-    Node();
+    Node(Meal* _data, Node* _next = nullptr);
     ~Node();
     // pointer to the data held for the node 
-    FoodItem* data;
+    Meal* data;
     // pointer to the next node in the list 
     Node* next;
 };
