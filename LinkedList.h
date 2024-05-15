@@ -8,8 +8,12 @@ class LinkedList
 public:
     LinkedList();
     ~LinkedList();
-
-    // more functions to be added perhaps...
+    void add_front(Meal* meal);
+    void add_back(Meal* meal);
+    void display() const;
+    bool removeMeal(const std::string& mealId);
+    Meal* findMealById(const std::string& mealId) const;
+    Node* getHead() const;
 
 private:
     // the beginning of the list
