@@ -1,4 +1,6 @@
 #include "Menu.h"
+
+
 std::string Menu::getNextMealId() {
     int numDigits = std::to_string(nextId).length();  // Combien de chiffres dans le numéro
     int totalDigits = 4;  // Total de chiffres souhaité pour l'ID (vous pouvez ajuster cela)
@@ -18,22 +20,19 @@ std::string Menu::previewNextMealId() const {
 
 void Menu::addMeal(const std::string& name, const std::string& description, double price) {
     std::string id = getNextMealId();
-    Meal newMeal(id, name, description, price);
-    meals.push_back(newMeal);
+    Meal* newMeal=new Meal(id, name, description, price);
+    mealList.add_back(newMeal);
     nextId++;
-    std::cout << "This item \"" << newMeal.name << " - a dish consisting of " << newMeal.description
-              << "\" has now been added to the food menu." << std::endl;
+    std::cout << "This item \"" << newMeal->name << " - a dish consisting of " << newMeal->description
+              << ".\" has now been added to the food menu." << std::endl;
 }
 
 void Menu::removeMeal(std::string mealId) {
-    auto it = std::find_if(meals.begin(), meals.end(), [mealId](const Meal& m) {
-        return m.id == mealId;
-    });
-
-    if (it != meals.end()) {
-        std::cout << "Enter the food id of the food to remove from the menu: " << mealId << std::endl;
-        std::cout << "\"" << it->id << " - " << it->name<< " - " << it->description << "\" has been removed from the system." << std::endl;
-        meals.erase(it);
+    Meal* meal = mealList.findMealById(mealId);
+    std::string name=meal->name;
+    std::string description=meal->description;
+    if (mealList.removeMeal(mealId)) {
+        std::cout <<"\""<<mealId<<" - "<<name<<" - "<<description<<"\" has been removed from the system." << std::endl;
     } else {
         std::cout << "No meal found with ID " << mealId << ". No meal removed." << std::endl;
     }
@@ -42,21 +41,24 @@ void Menu::removeMeal(std::string mealId) {
 void Menu::displayMeals() const {
     std::cout<<"Food Menu"<<std::endl;
     std::cout<<"---------"<<std::endl;
-    std::cout<< std::left << std::setw(10) << "ID" 
-              << std::setw(20) << "Name" 
-              << std::setw(10) << "Price" << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
+    std::cout<< std::left << std::setw(5) << "ID" 
+              << std::setw(50) << "|Name" 
+              << std::setw(8) << " |Length" << std::endl;
+    std::cout << "------------------------------------------------------------------" << std::endl;
 
-    for (const Meal& meal : meals) {
-        meal.display();
+    Node* current = mealList.getHead();  // Suppose que vous avez une fonction getHead() pour obtenir la tête
+    while (current != nullptr) {
+        current->data->display();  // Affichage du repas, en supposant que data est un pointeur vers Meal
+        current = current->next;  // Déplacer vers le prochain nœud
     }
 }
 
 bool Menu::loadFromFile(const std::string& filename) {
     std::ifstream file(filename);
+    bool rep=true;
     if (!file.is_open()) {
         std::cerr << "Failed to open file for reading: " << filename << std::endl;
-        return false;
+        rep=false;
     }
     std::string line;
     std::string lastId = "F0000";
@@ -66,7 +68,9 @@ bool Menu::loadFromFile(const std::string& filename) {
         std::string id, name, description, priceStr;
         if (getline(iss, id, '|') && getline(iss, name, '|') && getline(iss, description, '|') && getline(iss, priceStr)) {
             double price = std::stod(priceStr); // Convert price string to double
-            meals.emplace_back(id, name, description, price);
+
+            Meal* newMeal = new Meal(id, name, description, price);
+            mealList.add_back(newMeal);  // Add to linked list
             lastId = id;
         } else {
             std::cerr << "Erreur de formatage lors de la lecture de la ligne : " << line << std::endl;
@@ -78,30 +82,36 @@ bool Menu::loadFromFile(const std::string& filename) {
         nextId = std::stoi(lastId.substr(1)) + 1;  // Extrait le numéro après "F" et incrémente
     }
 
-    return true;
+    return rep;
 }
 
-
-
-Meal Menu::findMeal(std::string mealId) const {
-    for (const Meal& meal : meals) {
-        if (meal.id == mealId) {
-            return meal;
-        }
-    }
-    return Meal("", "", "", 0.0); // Return an empty Meal if not found
-}
 
 bool Menu::saveToFileMeal(const std::string& filename) const {
     std::ofstream file(filename);
+    bool rep=true;
     if (!file.is_open()) {
         std::cerr << "Failed to open file for writing: " << filename << std::endl;
-        return false;
+        rep=false;
     }
-    for (const Meal& meal : meals) {
-        file << meal.id << "|" << meal.name << "|" << meal.description << "|" << meal.price << "\n";
+    else{
+    Node* current = mealList.getHead();
+    while (current != nullptr) {
+        Meal* meal = current->data;
+        double formattedPrice = meal->price / 100.0;
+        file << meal->id << "|" << meal->name << "|" << meal->description << "|" << std::fixed << std::setprecision(1) << formattedPrice<<std::endl;
+        current = current->next;
     }
+
     file.close();
-    return true;
+    }
+    return rep;
+}
+
+Meal Menu::findMeal(const std::string& mealId) const {
+    Meal* meal = mealList.findMealById(mealId);
+    if (meal != nullptr) {
+        return *meal;
+    }
+    return Meal("", "", "",0);  // Return a default Meal if not found
 }
 
