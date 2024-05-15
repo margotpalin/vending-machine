@@ -1,9 +1,10 @@
 #include "Meal.h"
-Meal::Meal(std::string _id, std::string _name, std::string _description, double _price)
-        : id(_id), name(std::move(_name)), description(std::move(_description)), price(_price) {}
+Meal::Meal(const std::string& id, const std::string& name, const std::string& description, double _price)
+        : id(id), name(name), description(description), price(_price) {}
 
 void Meal::display() const {
-    std::cout << std::left << std::setw(10) << id
-                  << std::setw(20) << name
-                  << "$" << std::setw(8) << std::fixed << std::setprecision(2) << price << std::endl;
+    std::cout << std::left << std::setw(5) << id << "|"
+                  << std::setw(50) << name
+                  << "|$" <<std::setw(8)<< std::fixed << std::setprecision(2) << price<< std::endl;
     }
+
