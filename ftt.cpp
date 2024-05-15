@@ -2,19 +2,18 @@
 #include <iomanip>
 #include <string>
 #include <limits>
-#include "Menu.h"
 #include "TRANSACTIONMANAGER.h"
 
 using namespace std;
-
-// Function prototypes
 void displayMainMenu();
-void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running);
 void clearCin();
+void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running);
+
 int main() {
     Menu menu;
     TransactionManager tm(menu); // TransactionManager is initialized with the menu
     tm.loadInitialBalance("coins.dat");
+    
     menu.loadFromFile("foods.dat"); // Assuming loadFromFile is implemented
 
     bool running = true;
@@ -48,10 +47,17 @@ void addNewMeal(Menu& menu) {
     std::cout << "Enter the item description: ";
     std::getline(std::cin, description);
     std::cout << "Enter the price for this item (in cents): ";
-    std::cin >> priceCents;
-    std::cin.ignore(); // Ignore leftover newline character after reading number
+    if (!(std::cin >> priceCents)) {
+        std::cin.clear();  // Nettoie les flags d'erreur de cin
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore les caractères restants dans le tampon
+        std::cerr << "Invalid input for price. Please enter a numeric value." << std::endl;
 
-    menu.addMeal(name, description, priceCents / 100);  // Convert cents to dollars
+    } else {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Nettoie le tampon après la lecture
+
+        // Appeler addMeal avec les paramètres appropriés
+        menu.addMeal(name, description, priceCents/100); 
+}
 }
 
 
