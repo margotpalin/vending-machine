@@ -108,6 +108,9 @@ void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running
     else if(choice==6){
             tm.displayBalance();
         }
+    else if(choice==7){
+        running=false;
+    }
     else{
             cout << "Invalid option, try again." << endl;
     }
