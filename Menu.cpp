@@ -20,11 +20,15 @@ std::string Menu::previewNextMealId() const {
 
 void Menu::addMeal(const std::string& name, const std::string& description, double price) {
     std::string id = getNextMealId();
-    Meal* newMeal=new Meal(id, name, description, price);
-    mealList.add_back(newMeal);
-    nextId++;
-    std::cout << "This item \"" << newMeal->name << " - a dish consisting of " << newMeal->description
+    try {Meal* newMeal=new Meal(id, name, description, price);
+        mealList.add_back(newMeal);
+        nextId++;
+        std::cout << "This item \"" << newMeal->name << " - a dish consisting of " << newMeal->description
               << ".\" has now been added to the food menu." << std::endl;
+        } 
+    catch(const std::invalid_argument& e){
+        std::cout << "error" << e.what()<<std::endl;
+    }
 }
 
 void Menu::removeMeal(std::string mealId) {
