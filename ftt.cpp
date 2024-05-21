@@ -42,11 +42,11 @@ void addNewMeal(Menu& menu) {
 
     std::string name, description;
     double priceCents;
-    std::cout << "Enter the item name: ";
+    std::cout << "Enter the item name: " << std::endl;
     std::getline(std::cin, name);
-    std::cout << "Enter the item description: ";
+    std::cout << "Enter the item description: " << std::endl;
     std::getline(std::cin, description);
-    std::cout << "Enter the price for this item (in cents): ";
+    std::cout << "Enter the price for this item (in cents): " << std::endl;
     if (!(std::cin >> priceCents)) {
         std::cin.clear();  // Nettoie les flags d'erreur de cin
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore les caractères restants dans le tampon
@@ -76,7 +76,7 @@ void displayMainMenu() {
     cout << "   5. Remove Food" << endl;
     cout << "   6. Display Balance" << endl;
     cout << "   7. Abort Program" << endl;
-    cout << "Select your option (1-7): ";
+    cout << "Select your option (1-7): " << endl;
 }
 
 void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running) {
@@ -101,14 +101,20 @@ void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running
             addNewMeal(menu);
         }
     else if(choice==5){
-            cout << "Enter the food id of the food to remove from the menu: ";
+            cout << "Enter the food id of the food to remove from the menu: " << std::endl;
             cin >> mealId;
             menu.removeMeal(mealId);
         }
     else if(choice==6){
             tm.displayBalance();
         }
+    
+    else if(choice==7){
+        running = false;
+    }
+
     else{
             cout << "Invalid option, try again." << endl;
     }
 }
+
