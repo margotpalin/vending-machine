@@ -97,7 +97,7 @@ bool Menu::saveToFileMeal(const std::string& filename) const {
     Node* current = mealList.getHead();
     while (current != nullptr) {
         Meal* meal = current->data;
-        double formattedPrice = meal->price / 100.0;
+        double formattedPrice = meal->price;
         file << meal->id << "|" << meal->name << "|" << meal->description << "|" << std::fixed << std::setprecision(1) << formattedPrice<<std::endl;
         current = current->next;
     }
@@ -114,4 +114,3 @@ Meal Menu::findMeal(const std::string& mealId) const {
     }
     return Meal("", "", "",0);  // Return a default Meal if not found
 }
-
