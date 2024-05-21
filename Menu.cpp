@@ -29,12 +29,17 @@ void Menu::addMeal(const std::string& name, const std::string& description, doub
 
 void Menu::removeMeal(std::string mealId) {
     Meal* meal = mealList.findMealById(mealId);
-    std::string name=meal->name;
-    std::string description=meal->description;
-    if (mealList.removeMeal(mealId)) {
-        std::cout <<"\""<<mealId<<" - "<<name<<" - "<<description<<"\" has been removed from the system." << std::endl;
-    } else {
-        std::cout << "No meal found with ID " << mealId << ". No meal removed." << std::endl;
+    if (meal == nullptr) {
+        std::cout << "No meal found with ID " << mealId << ". No meal removed." << std::endl; // Exit the function if no meal is found
+    }
+    else{
+        std::string name=meal->name;
+        std::string description=meal->description;
+        if (mealList.removeMeal(mealId)) {
+            std::cout <<"\""<<mealId<<" - "<<name<<" - "<<description<<"\" has been removed from the system." << std::endl;
+        } else {
+            std::cout << "No meal found with ID " << mealId << ". No meal removed." << std::endl;
+        }
     }
 }
 
