@@ -43,7 +43,7 @@ void  LinkedList::display() const {
 bool LinkedList::removeMeal(const std::string& mealId) {
     Node* current = head;
     Node* previous = nullptr;
-
+    bool rep=true;
     while (current != nullptr && current->data->id != mealId) {
         previous = current;
         current = current->next;
@@ -52,7 +52,7 @@ bool LinkedList::removeMeal(const std::string& mealId) {
     // Debug: Indicate position found or not found
     if (current == nullptr) {
         std::cout << "Meal ID not found: " << mealId << std::endl;
-        return false;  
+        rep= false;  
     }
     if (previous == nullptr) {
   
@@ -66,7 +66,7 @@ bool LinkedList::removeMeal(const std::string& mealId) {
     current = nullptr;  // Prevent use-after-free errors by nullifying the pointer.
 
 
-    return true;
+    return rep;
 }
 Meal* LinkedList::findMealById(const std::string& mealId) const {
     Node* current = head;
