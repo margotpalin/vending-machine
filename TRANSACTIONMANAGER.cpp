@@ -24,7 +24,7 @@ void TransactionManager::purchaseMeal(std::string mealId) {
     bool rep = false;
 
     std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price- totalPaid) << ": ";
-
+    std::cout<<std::endl;
     while (std::cin >> denomination) {
         rep=updateCashRegister(denomination, 1);  // Add each denomination to the register
         if(rep==true){
