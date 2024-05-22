@@ -26,4 +26,3 @@ void Meal::display() const {
                   << "|$" <<std::setw(8)<< std::fixed << std::setprecision(2) << price<< std::endl;
     }
 
-
