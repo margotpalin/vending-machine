@@ -48,8 +48,6 @@ bool LinkedList::removeMeal(const std::string& mealId) {
         previous = current;
         current = current->next;
     }
-
-    // Debug: Indicate position found or not found
     if (current == nullptr) {
         std::cout << "Meal ID not found: " << mealId << std::endl;
         rep= false;  
@@ -72,13 +70,13 @@ Meal* LinkedList::findMealById(const std::string& mealId) const {
     Node* current = head;
     while (current != nullptr) {
         if (current->data->id == mealId) {
-            return current->data;  // Retourne le repas trouvé
+            return current->data;  // Return the meal found
             }
         current = current->next;
     }
-    return nullptr;  // Retourne nullptr si aucun repas n'est trouvé
+    return nullptr;  // Return nullptr if no meal is find 
     }
 
 Node* LinkedList::getHead() const {
-        return head;  // Retourne le pointeur vers le premier élément de la liste
-    }
+        return head;  // Return the pointeur on the first element of the linked list
+}
