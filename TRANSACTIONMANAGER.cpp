@@ -25,6 +25,7 @@ void TransactionManager::purchaseMeal(std::string mealId) {
 
     std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price- totalPaid) << ": ";
     std::cout<<std::endl;
+
     while (std::cin >> denomination) {
         rep=updateCashRegister(denomination, 1);  // Add each denomination to the register
         if(rep==true){
@@ -165,7 +166,7 @@ bool TransactionManager::saveToFileCoin(const std::string& filename) const {
 void TransactionManager::displayBalance() const {
     double totalValue = 0.0;
 
-    std::cout << "Blance Summary" << std::endl;
+    std::cout << "Balance Summary" << std::endl;
     std::cout << "-------------" << std::endl;
     std::cout << std::left << std::setw(6) << "Denom" << " | "
               << std::setw(9) << "Quantity" << " | "
