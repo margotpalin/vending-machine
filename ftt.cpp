@@ -32,7 +32,7 @@ int main() {
 
         executeOption(menu, tm, choice, running);
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void addNewMeal(Menu& menu) {
@@ -48,14 +48,12 @@ void addNewMeal(Menu& menu) {
     std::getline(std::cin, description);
     std::cout << "Enter the price for this item (in cents): " << std::endl;
     if (!(std::cin >> priceCents)) {
-        std::cin.clear();  // Nettoie les flags d'erreur de cin
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore les caractères restants dans le tampon
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cerr << "Invalid input for price. Please enter a numeric value." << std::endl;
 
     } else {
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Nettoie le tampon après la lecture
-
-        // Appeler addMeal avec les paramètres appropriés
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         menu.addMeal(name, description, priceCents/100); 
 }
 }
@@ -114,7 +112,6 @@ void executeOption(Menu& menu, TransactionManager& tm, int choice, bool& running
     }
 
     else{
-            cout << "Invalid option, try again." << endl;
+        cout << "Invalid option, try again." << endl;
     }
 }
-
