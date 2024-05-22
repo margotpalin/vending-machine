@@ -15,13 +15,21 @@ $(EXE): $(OBJ)
 clean:
 	rm -rf $(EXE) *.o *.dSYM
 
-test: all
-	@echo "Running tests..."
-	@./$(EXE) < testreq4.input > output4; diff output4 testreq4.expected_output
-	@./$(EXE) < testreq5.input > output5; diff output5 testreq5.expected_output
-	@./$(EXE) < testreq6.input > output6; diff output6 testreq6.expected_output
-	@./$(EXE) < testreq7.input > output7; diff output7 testreq7.expected_output
-	@./$(EXE) < testreq8.input > output8; diff output8 testreq8.expected_output
-	@./$(EXE) < testreq9.input > output9; diff output9 testreq9.expected_output
+backup:
+	cp coins.dat coins.dat.backup
 
-.PHONY: all clean test
+restore:
+	cp coins.dat.backup coins.dat
+
+test: backup all
+	@echo "Running tests..."
+	@./$(EXE) < testreq4.input > testreq4.actual_output; diff -w testreq4.actual_output testreq4.expected_output
+	@./$(EXE) < testreq5.input > testreq5.actual_output; diff -w testreq5.actual_output testreq5.expected_output
+
+	@$(MAKE) restore
+	@./$(EXE) < testreq6.input > testreq6.actual_output; diff -w testreq6.actual_output testreq6.expected_output
+	@./$(EXE) < testreq7.input > testreq7.actual_output; diff -w testreq7.actual_output testreq7.expected_output
+	@./$(EXE) < testreq8.input > testreq8.actual_output; diff -w testreq8.actual_output testreq8.expected_output
+	@./$(EXE) < testreq9.input > testreq9.actual_output; diff -w testreq9.actual_output testreq9.expected_output
+
+.PHONY: all clean backup restore test
