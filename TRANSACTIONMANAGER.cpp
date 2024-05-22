@@ -98,14 +98,12 @@ bool TransactionManager::giveChange(double change) {
 
 void TransactionManager::refund(double amount) {
     std::cout << "Refunding $" << std::fixed << std::setprecision(2) << amount << std::endl;
-    // Reverse the transaction - this assumes you have a record of the transaction that needs to be reversed
-    // Here is a simplified example, assuming you track last transaction separately:
+    // Reverse the transaction
     for (const auto& pair : lastTransaction) {
         int denom = pair.first;
         int count = pair.second;
-        cashRegister[denom] -= count; // Subtract the count of each denomination added during the transaction
+        cashRegister[denom] -= count; // Subtract the count of each denomination
     }
-    // Clear last transaction record
     lastTransaction.clear();
 }
 
@@ -156,7 +154,6 @@ bool TransactionManager::saveToFileCoin(const std::string& filename) const {
         std::cerr << "Failed to open file for writing: " << filename << std::endl;
         rep=false;
     }
-    // Supposons que cashRegister est un std::map<int, int>
     for (const auto& pair : cashRegister) {
         file << pair.first << "," << pair.second << "\n";
     }
@@ -168,7 +165,7 @@ bool TransactionManager::saveToFileCoin(const std::string& filename) const {
 void TransactionManager::displayBalance() const {
     double totalValue = 0.0;
 
-    std::cout << "Balance Summary" << std::endl;
+    std::cout << "Blance Summary" << std::endl;
     std::cout << "-------------" << std::endl;
     std::cout << std::left << std::setw(6) << "Denom" << " | "
               << std::setw(9) << "Quantity" << " | "
