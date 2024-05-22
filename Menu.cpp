@@ -55,15 +55,16 @@ void Menu::displayMeals() const {
               << std::setw(8) << " |Length" << std::endl;
     std::cout << "------------------------------------------------------------------" << std::endl;
 
-    Node* current = mealList.getHead();  // Suppose que vous avez une fonction getHead() pour obtenir la tête
+    Node* current = mealList.getHead();
     while (current != nullptr) {
-        current->data->display();  // Affichage du repas, en supposant que data est un pointeur vers Meal
-        current = current->next;  // Déplacer vers le prochain nœud
+        current->data->display();  // print the meal
+        current = current->next;  // move to the next node
     }
 }
 
 bool Menu::loadFromFile(const std::string& filename) {
     std::ifstream file(filename);
+    std::string id, name, description, priceStr;
     bool rep=true;
     if (!file.is_open()) {
         std::cerr << "Failed to open file for reading: " << filename << std::endl;
@@ -88,7 +89,7 @@ bool Menu::loadFromFile(const std::string& filename) {
     file.close();
 
     if (!lastId.empty() && lastId.size() > 1) {
-        nextId = std::stoi(lastId.substr(1)) + 1;  // Extrait le numéro après "F" et incrémente
+        nextId = std::stoi(lastId.substr(1)) + 1;  // Extract the number after the "F" et increment
     }
 
     return rep;
