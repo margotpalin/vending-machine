@@ -33,6 +33,7 @@ void TransactionManager::purchaseMeal(std::string mealId) {
             break;
         }
         std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (meal.price - totalPaid) << ": ";
+        std::cout<<std::endl;
     }
 
     if (totalPaid < meal.price) {
